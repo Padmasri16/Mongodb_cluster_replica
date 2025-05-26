@@ -1,0 +1,73 @@
+body{
+ font-size: 18px;
+ font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div{
+ padding: 10px;
+ border: 2px solid black;
+ margin: 10px;
+}
+.inner-container{
+ border: 0px solid black;
+}
+
+.left-section{
+ width:440px;
+ height: 300px;
+ border-radius: 10px;
+ padding: 0px;
+}
+.list{
+ overflow: auto;
+ height: 100px;
+ width:300px;
+ margin-left:60px;
+ margin-right:60px;
+}
+li{
+ list-style-type: none;
+ padding: 0;
+ margin: 0;
+}
+.inner-container2{
+ display: flex;
+ border:none;
+ margin-left: 85px;
+ margin-right: 85px;
+}
+.container,.inner-container1{
+ border:none;
+}
+.inner-container1 form{
+ display: flex;
+ margin-left: 210px;
+ margin-right: 210px;
+ height: 50px;
+}
+input[name = "con_string" ]{
+width :800px;
+padding: 0px;
+border-radius: 10px;
+padding-left: 50px;
+}
+#search-btn{
+margin-left : 20px;
+width :200px;
+border-radius: 10px;
+}
+.right-section{
+ width:800px;
+ height: 300px;
+ border-radius: 10px;
+ overflow: auto;
+}
+input[name = "search-namespaces"]{
+ width : 350px;
+ height: 50px;
+ margin-left: 45px;
+ margin-top:30px;
+ margin-right: 45px;
+ border-radius: 10px;
+ padding-left: 30px;
+ margin-bottom: 30px;
+}

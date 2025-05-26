@@ -1,29 +1,38 @@
 const express = require("express");
 const path = require("path");
 const app = express();
+const session = require("express-session");
 
 let { MongoClient } = require("mongodb");
 
 app.use(express.urlencoded({ extended: false }));
 
-let con_string = "";
+app.use(
+  session({
+    secret: "key to cookie",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 const regex =
   /^mongodb(?:\+srv)?:\/\/(?:[^:@\/\s]+(?::[^@\/\s]+)?@)?[^\s\/]+(?:\/[a-zA-Z0-9_-]*)?(?:\?.*)?$/;
 
 app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "index1.html"));
 });
 
 app.post("/cluster.js", async function (req, res) {
-  con_string = req.body.con_string;
-
-  if (!regex.test(con_string)) {
-    return res.status(400).send(`Invalid connection string: ${con_string}`);
+  const con_string = req.body.con_string;
+  req.session.con_string = con_string;
+  if (!regex.test(req.session.con_string)) {
+    return res
+      .status(400)
+      .send(`Invalid connection string: ${req.session.con_string}`);
   }
 
   try {
-    const client = new MongoClient(con_string);
+    const client = new MongoClient(req.session.con_string);
     await client.connect();
     let dbList = await client.db().admin().listDatabases();
     await client.close();
@@ -38,7 +47,7 @@ app.post("/cluster.js", async function (req, res) {
     });
     dbases += `</ul><br><button>Create New Database</button><br><br>`;
     dbases += `<form action="/" method="get">
-  <input type="hidden" name="con_string" value="${con_string}">
+  <input type="hidden" name="con_string" value="${req.session.con_string}">
   <button type="submit">Back</button>
 </form>`;
 
@@ -52,13 +61,12 @@ app.post("/cluster.js", async function (req, res) {
 
 app.get("/collections/:dbname", async function (req, res) {
   const dbname = req.params.dbname;
-
-  if (!con_string) {
+  if (!req.session.con_string) {
     return res.status(400).send("Missing MongoDB connection string");
   }
 
   try {
-    const client = new MongoClient(con_string);
+    const client = new MongoClient(req.session.con_string);
     await client.connect();
 
     let db = client.db(dbname);
@@ -75,7 +83,7 @@ app.get("/collections/:dbname", async function (req, res) {
     });
     collection += `</ul><br><button>Create New Collection</button><br><br>`;
     collection += `<form action="/cluster.js" method="post">
-  <input type="hidden" name="con_string" value="${con_string}">
+  <input type="hidden" name="con_string" value="${req.session.con_string}">
   <button type="submit">Back</button>
 </form>`;
 
@@ -88,11 +96,11 @@ app.get("/collections/:dbname", async function (req, res) {
 app.get("/documents/:dbName/:colname", async function (req, res) {
   const dbName = req.params.dbName;
   const colName = req.params.colname;
-  if (!con_string) {
+  if (!req.session.con_string) {
     console.log("Connection string is missing");
   }
   try {
-    const client = new MongoClient(con_string);
+    const client = new MongoClient(req.session.con_string);
     await client.connect();
     let collection = client.db(dbName).collection(colName);
     let doc = await collection.find().toArray();
@@ -103,7 +111,7 @@ app.get("/documents/:dbName/:colname", async function (req, res) {
     });
     mydoc += `</ul><br><button>Create New Document</button><br><br>`;
     mydoc += `<form action="/collections/${dbName}" method="get">
-  <input type="hidden" name="con_string" value="${con_string}">
+  <input type="hidden" name="con_string" value="${req.session.con_string}">
   <button type="submit">Back</button>
 </form>`;
     res.send(mydoc);

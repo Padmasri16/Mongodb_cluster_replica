@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mongodb Cluster</title>
+    <link rel="stylesheet" href="style.css">
+    
+  </head>
+  <body>
+    <div class="container">
+      <div class="inner-container1">
+        <form action="" method="">
+          <input
+            name="con_string"
+            type="text"
+            autocomplete="off"
+            required
+            pattern="^mongodb(?:\+srv)?:\/\/(?:[^:@\/\s]+(?::[^@\/\s]+)?@)?[^\s\/]+(?:\/[a-zA-Z0-9_-]*)?(?:\?.*)?$"
+            placeholder="Enter the connection string..."
+          />
+
+          <button type="submit" id="search-btn">Search</button>
+        </form>
+      </div>
+      <!--inner - container1-->
+
+      <div class="inner-container2">
+        <div class="left-section">
+          <form>
+            <input
+              name="search-namespaces"
+              required
+              type="text"
+              placeholder="Search Namespaces"
+              autocomplete="off"
+            />
+          </form>
+          <div class="list">
+            <ul>
+              <li>
+                DB1
+                <ul>
+                  <li>col1</li>
+                  <li>col1</li>
+                </ul>
+              </li>
+              <li>
+                DB2
+                <ul>
+                  <li>col1</li>
+                  <li>col1</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <!--list-->
+        </div>
+        <!--left section-->
+
+        <div class="right-section">
+          <form>
+            <p>DbName.CollectionName</p>
+            <div class="filter">
+              <label
+                >Filter
+                <input
+                  name="filter"
+                  type="JSON"
+                  autocomplete="off"
+                  placeholder="Type a Query : { 'Field'  :  'Value'}"
+                />
+              </label>
+              <button type="submit">Find</button>
+            </div>
+            <p>QUERY RESULT : 1 To 4</p>
+            <div class="queryResult">
+              <ul>
+                <li>
+                  <div class="doc1">
+                    <ul>
+                      <li>{ 'Field 1 '' : 'Value 1;}</li>
+                      <li>{ 'Field 1 '' : 'Value 1;}</li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <div class="doc2">
+                    <ul>
+                      <li>{ 'Field 1 '' : 'Value 1;}</li>
+                      <li>{ 'Field 1 '' : 'Value 1;}</li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </form>
+        </div>
+        <!--right-section-->
+      </div>
+      <!--inner - container2-->
+    </div>
+    <!--container-->
+  </body>
+</html>
